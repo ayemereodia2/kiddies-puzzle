@@ -9,13 +9,22 @@
 /* Begin PBXBuildFile section */
 		E78871E3294252A70064020A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78871E2294252A70064020A /* AppDelegate.swift */; };
 		E78871E5294252A70064020A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78871E4294252A70064020A /* SceneDelegate.swift */; };
-		E78871E7294252A70064020A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78871E6294252A70064020A /* ViewController.swift */; };
+		E78871E7294252A70064020A /* PuzzlerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78871E6294252A70064020A /* PuzzlerViewController.swift */; };
 		E78871EA294252A70064020A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E78871E8294252A70064020A /* Main.storyboard */; };
 		E78871EC294252A80064020A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E78871EB294252A80064020A /* Assets.xcassets */; };
 		E78871EF294252A80064020A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E78871ED294252A80064020A /* LaunchScreen.storyboard */; };
 		E78871FA294252A80064020A /* KiddiesPuzzleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78871F9294252A80064020A /* KiddiesPuzzleTests.swift */; };
 		E7887204294252A80064020A /* KiddiesPuzzleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7887203294252A80064020A /* KiddiesPuzzleUITests.swift */; };
 		E7887206294252A80064020A /* KiddiesPuzzleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7887205294252A80064020A /* KiddiesPuzzleUITestsLaunchTests.swift */; };
+		E7887219294252CE0064020A /* simple.json in Resources */ = {isa = PBXBuildFile; fileRef = E7887213294252CE0064020A /* simple.json */; };
+		E788721A294252CE0064020A /* leaf.json in Resources */ = {isa = PBXBuildFile; fileRef = E7887214294252CE0064020A /* leaf.json */; };
+		E788721B294252CE0064020A /* crown.json in Resources */ = {isa = PBXBuildFile; fileRef = E7887215294252CE0064020A /* crown.json */; };
+		E788721C294252CE0064020A /* runner.json in Resources */ = {isa = PBXBuildFile; fileRef = E7887216294252CE0064020A /* runner.json */; };
+		E788721D294252CE0064020A /* star.json in Resources */ = {isa = PBXBuildFile; fileRef = E7887217294252CE0064020A /* star.json */; };
+		E788721E294252CE0064020A /* tree.json in Resources */ = {isa = PBXBuildFile; fileRef = E7887218294252CE0064020A /* tree.json */; };
+		E7887221294252F90064020A /* DotPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7887220294252F90064020A /* DotPuzzle.swift */; };
+		E7887224294253360064020A /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7887223294253360064020A /* GraphView.swift */; };
+		E78872272942544C0064020A /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78872262942544C0064020A /* DataLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +48,7 @@
 		E78871DF294252A70064020A /* KiddiesPuzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KiddiesPuzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E78871E2294252A70064020A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E78871E4294252A70064020A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E78871E6294252A70064020A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E78871E6294252A70064020A /* PuzzlerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzlerViewController.swift; sourceTree = "<group>"; };
 		E78871E9294252A70064020A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E78871EB294252A80064020A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E78871EE294252A80064020A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +58,15 @@
 		E78871FF294252A80064020A /* KiddiesPuzzleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KiddiesPuzzleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7887203294252A80064020A /* KiddiesPuzzleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiddiesPuzzleUITests.swift; sourceTree = "<group>"; };
 		E7887205294252A80064020A /* KiddiesPuzzleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiddiesPuzzleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		E7887213294252CE0064020A /* simple.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = simple.json; sourceTree = "<group>"; };
+		E7887214294252CE0064020A /* leaf.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = leaf.json; sourceTree = "<group>"; };
+		E7887215294252CE0064020A /* crown.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = crown.json; sourceTree = "<group>"; };
+		E7887216294252CE0064020A /* runner.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = runner.json; sourceTree = "<group>"; };
+		E7887217294252CE0064020A /* star.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = star.json; sourceTree = "<group>"; };
+		E7887218294252CE0064020A /* tree.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tree.json; sourceTree = "<group>"; };
+		E7887220294252F90064020A /* DotPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotPuzzle.swift; sourceTree = "<group>"; };
+		E7887223294253360064020A /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		E78872262942544C0064020A /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +97,7 @@
 		E78871D6294252A70064020A = {
 			isa = PBXGroup;
 			children = (
+				E7887212294252CE0064020A /* Data */,
 				E78871E1294252A70064020A /* KiddiesPuzzle */,
 				E78871F8294252A80064020A /* KiddiesPuzzleTests */,
 				E7887202294252A80064020A /* KiddiesPuzzleUITests */,
@@ -99,9 +118,12 @@
 		E78871E1294252A70064020A /* KiddiesPuzzle */ = {
 			isa = PBXGroup;
 			children = (
+				E7887225294253F90064020A /* ExternalData */,
+				E78872222942531D0064020A /* Views */,
+				E788721F294252EC0064020A /* Models */,
 				E78871E2294252A70064020A /* AppDelegate.swift */,
 				E78871E4294252A70064020A /* SceneDelegate.swift */,
-				E78871E6294252A70064020A /* ViewController.swift */,
+				E78871E6294252A70064020A /* PuzzlerViewController.swift */,
 				E78871E8294252A70064020A /* Main.storyboard */,
 				E78871EB294252A80064020A /* Assets.xcassets */,
 				E78871ED294252A80064020A /* LaunchScreen.storyboard */,
@@ -125,6 +147,43 @@
 				E7887205294252A80064020A /* KiddiesPuzzleUITestsLaunchTests.swift */,
 			);
 			path = KiddiesPuzzleUITests;
+			sourceTree = "<group>";
+		};
+		E7887212294252CE0064020A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				E7887213294252CE0064020A /* simple.json */,
+				E7887214294252CE0064020A /* leaf.json */,
+				E7887215294252CE0064020A /* crown.json */,
+				E7887216294252CE0064020A /* runner.json */,
+				E7887217294252CE0064020A /* star.json */,
+				E7887218294252CE0064020A /* tree.json */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		E788721F294252EC0064020A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E7887220294252F90064020A /* DotPuzzle.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E78872222942531D0064020A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E7887223294253360064020A /* GraphView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E7887225294253F90064020A /* ExternalData */ = {
+			isa = PBXGroup;
+			children = (
+				E78872262942544C0064020A /* DataLoader.swift */,
+			);
+			path = ExternalData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,8 +291,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E78871EF294252A80064020A /* LaunchScreen.storyboard in Resources */,
+				E7887219294252CE0064020A /* simple.json in Resources */,
 				E78871EC294252A80064020A /* Assets.xcassets in Resources */,
+				E788721D294252CE0064020A /* star.json in Resources */,
+				E788721B294252CE0064020A /* crown.json in Resources */,
+				E788721C294252CE0064020A /* runner.json in Resources */,
+				E788721A294252CE0064020A /* leaf.json in Resources */,
 				E78871EA294252A70064020A /* Main.storyboard in Resources */,
+				E788721E294252CE0064020A /* tree.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +323,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E78871E7294252A70064020A /* ViewController.swift in Sources */,
+				E7887224294253360064020A /* GraphView.swift in Sources */,
+				E78871E7294252A70064020A /* PuzzlerViewController.swift in Sources */,
+				E78872272942544C0064020A /* DataLoader.swift in Sources */,
 				E78871E3294252A70064020A /* AppDelegate.swift in Sources */,
 				E78871E5294252A70064020A /* SceneDelegate.swift in Sources */,
+				E7887221294252F90064020A /* DotPuzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
