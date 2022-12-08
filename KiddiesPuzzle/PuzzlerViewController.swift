@@ -10,7 +10,7 @@ import UIKit
 class PuzzlerViewController: UIViewController {
     
     var dataloader: DataLoader = {
-        DataLoader(filename: "tree")
+        DataLoader(filename: "simple")
     }()
     
     override func loadView() {
@@ -21,6 +21,8 @@ class PuzzlerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        //let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
+        //self.view.addGestureRecognizer(pinchGesture)
     }
     
     var nodeItems = [GraphItem]()
@@ -52,6 +54,16 @@ class PuzzlerViewController: UIViewController {
     // pass points to initialize DotPuzzle models
     // initialize GraphView with array of GraphItems
     
-   
+    @objc func changeScale(_ pinchRecognizer : UIPinchGestureRecognizer) {
+        switch pinchRecognizer.state {
+        case .changed, .ended:
+            //scale *= pinchRecognizer.scale
+        pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
+            //    sender.scale = 1.0
+            pinchRecognizer.scale = 1.0
+        default:
+            break
+        }
+    }
 }
 

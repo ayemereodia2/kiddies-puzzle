@@ -20,6 +20,8 @@ class GraphView: UIView {
         }
     }
     
+    var size = 200.0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
@@ -41,7 +43,10 @@ class GraphView: UIView {
         switch pinchRecognizer.state {
         case .changed, .ended:
             scale *= pinchRecognizer.scale
-            pinchRecognizer.scale = 1
+            //pinchRecognizer.scale = 1
+            pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
+                //    sender.scale = 1.0
+                pinchRecognizer.scale = 1.0
         default:
             break
         }
@@ -59,6 +64,14 @@ class GraphView: UIView {
         }
     }
     
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let point = touches.first?.location(in: nil) else { return }
+        
+        //lastLine.append(point)
+        //line.append(lastLine)
+        
+       // setNeedsDisplay()
+    }
     
     private func makeNodeCircle(point: CGPoint, name: String = "") {
         var path = UIBezierPath()
@@ -70,6 +83,23 @@ class GraphView: UIView {
         path.stroke()
         path.fill()
     }
+    
+    private func addLine(fromPoint start: CGPoint, toPoint end:CGPoint) {
+        let line = CAShapeLayer()
+        let linePath = UIBezierPath()
+        linePath.move(to: start)
+        linePath.addLine(to: end)
+        linePath.lineCapStyle = .butt
+        line.path = linePath.cgPath
+        line.strokeColor = UIColor.yellow.cgColor
+        line.lineWidth = 1
+        line.lineJoin = CAShapeLayerLineJoin.round
+        layer.addSublayer(line)
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.duration = 0.5
+        line.add(animation, forKey: "MyAnimation")
+  }
 }
 
 
