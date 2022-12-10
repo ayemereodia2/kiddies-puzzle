@@ -28,6 +28,16 @@ class DataLoader {
         return decodedData
     }
     
+    func loadPoints() -> [CGPoint] {
+        var rawPoints = [CGPoint]()
+        if let decodedPoints = readLocalFile() {
+            for point in decodedPoints {
+                rawPoints.append(CGPoint(x: CGFloat(point.x), y: CGFloat(point.y)))
+            }
+        }
+        return rawPoints
+    }
+    
     private func parse(jsonData: Data) -> [DemoDataPoints] {
         var decodedData: [DemoDataPoints] = []
         

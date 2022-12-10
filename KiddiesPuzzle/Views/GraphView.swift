@@ -20,8 +20,6 @@ class GraphView: UIView {
         }
     }
     
-    var size = 200.0
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
@@ -65,12 +63,8 @@ class GraphView: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let point = touches.first?.location(in: nil) else { return }
-        
-        //lastLine.append(point)
-        //line.append(lastLine)
-        
-       // setNeedsDisplay()
+        guard let _ = touches.first?.location(in: nil) else { return }
+    
     }
     
     private func makeNodeCircle(point: CGPoint, name: String = "") {
