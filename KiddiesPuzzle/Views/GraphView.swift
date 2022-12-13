@@ -12,13 +12,25 @@ enum GraphItem {
     case edge(src: CGPoint, dst: CGPoint, highlighted: Bool)
 }
 
-@IBDesignable
+protocol SourcePointDelegate: AnyObject {
+    func didUpdateSource(point: CGPoint)
+}
+
+
 class GraphView: UIView {
     var items: [GraphItem] = [] {
         didSet {
             setNeedsDisplay()
         }
     }
+    
+    var src: CGPoint = CGPoint.zero {
+        didSet {
+            delegate?.didUpdateSource(point: src)
+        }
+    }
+    
+    weak var delegate: SourcePointDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -52,40 +64,45 @@ class GraphView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        for item in items {
+        for (index,item) in items.enumerated() {
+            
             switch item {
-            case .node(loc: let loc, name: _, highlighted: _):
-                makeNodeCircle(point: loc)
-            case .edge(src: _, dst: _, highlighted: _):
-                print("")
+            case .node(loc: let loc, name: _, highlighted: let highlighted):
+                if index == 0 {
+                    src = loc
+                }
+                makeNodeCircle(point: loc, highlighted: highlighted)
+            case .edge(src: let src, dst: let des, highlighted: let highlighted):
+                addLine(fromPoint: src, toPoint: des, highlighted: highlighted)
             }
         }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let _ = touches.first?.location(in: nil) else { return }
-    
-    }
-    
-    private func makeNodeCircle(point: CGPoint, name: String = "") {
+    private func makeNodeCircle(point: CGPoint, name: String = "", highlighted: Bool) {
         var path = UIBezierPath()
-        //(x * scale + vx, y * scale + vy)
         path = UIBezierPath(ovalIn: CGRect(x: point.x, y: point.y, width: 20, height: 20))
-        UIColor.yellow.setStroke()
-        UIColor.red.setFill()
+        let color: UIColor = highlighted ? .blue : .yellow
+        color.setStroke()
+        color.setFill()
         path.lineWidth = 2
         path.stroke()
         path.fill()
     }
     
-    private func addLine(fromPoint start: CGPoint, toPoint end:CGPoint) {
+    private func addLine(fromPoint start: CGPoint, toPoint end:CGPoint, highlighted: Bool) {
+        if highlighted {
+            makeNodeCircle(point: end, highlighted: highlighted)
+            makeNodeCircle(point: start, highlighted: !highlighted)
+            src = end
+        }
+        
         let line = CAShapeLayer()
         let linePath = UIBezierPath()
         linePath.move(to: start)
         linePath.addLine(to: end)
         linePath.lineCapStyle = .butt
         line.path = linePath.cgPath
-        line.strokeColor = UIColor.yellow.cgColor
+        line.strokeColor = UIColor.red.cgColor
         line.lineWidth = 1
         line.lineJoin = CAShapeLayerLineJoin.round
         layer.addSublayer(line)

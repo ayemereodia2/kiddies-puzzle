@@ -7,7 +7,8 @@
 
 import Foundation
 protocol ViewUpdaterDelegate: AnyObject {
-    func updateViewController(dots: [Dot])
+    func activateUnconnectedDotsInSubView(dots: [Dot])
+    func activateConnectedDotsInSubView(dots: [Dot])
 }
 
 class DotPuzzle {
@@ -15,7 +16,7 @@ class DotPuzzle {
     
     public var connectedDots:[Dot] = [] {
         didSet {
-            delegate?.updateViewController(dots: connectedDots)
+            delegate?.activateConnectedDotsInSubView(dots: connectedDots)
         }
     }
     
@@ -28,7 +29,7 @@ class DotPuzzle {
         makeUnconnectedDots()
     }
     
-    func connectOneMoreDot() -> DotPuzzle {
+    @discardableResult func connectOneMoreDot() -> DotPuzzle {
         let firstUnconnectedDot = unconnectedDots.removeFirst()
         connectedDots.append(firstUnconnectedDot)
         return self
@@ -36,13 +37,13 @@ class DotPuzzle {
     
       func makeUnconnectedDots() {
         for (index,point) in points.enumerated() {
-            let unconnectedDot = Dot(location: point, label: index)
+            let unconnectedDot = Dot(location: CGPoint(x: point.x, y: point.y), label: index)
             unconnectedDots.append(unconnectedDot)
         }
     }
     
     func activateSubView() {
-        delegate?.updateViewController(dots: unconnectedDots)
+        delegate?.activateUnconnectedDotsInSubView(dots: unconnectedDots)
     }
 }
 
@@ -52,6 +53,6 @@ struct Dot {
 }
 
 struct DemoDataPoints: Codable {
-    let x: Float
-    let y: Float
+    let x: Double
+    let y: Double
 }

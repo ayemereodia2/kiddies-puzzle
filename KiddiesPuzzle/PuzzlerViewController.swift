@@ -10,18 +10,18 @@ import UIKit
 class PuzzlerViewController: UIViewController {
     
     var dataloader: DataLoader = {
-        DataLoader(filename: "star")
+        DataLoader(filename: "tree")
     }()
     
     var graphView = GraphView()
-    
     var rawPoints = [CGPoint]()
     var nodeItems = [GraphItem]()
     var dotModels:DotPuzzle!
-    
+    var updatedSrc = CGPoint.zero
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        graphView.delegate = self
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -48,25 +48,53 @@ class PuzzlerViewController: UIViewController {
 
     // take CGPoint JSON inputs from API or folder
     // pass points to initialize DotPuzzle models
-    // initialize GraphView with array of GraphItems
+    // reload GraphView with array of GraphItems
   
     
     private func updateUI(items: [GraphItem]) {
         graphView.items = items
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let point = touches.first?.location(in: nil) else { return }
+        dotModels.connectOneMoreDot()
+    }
+
 }
 
 extension PuzzlerViewController: ViewUpdaterDelegate {
-    func updateViewController(dots: [Dot]) {
+    func activateUnconnectedDotsInSubView(dots: [Dot]) {
+        var items:GraphItem!
+        
         for point in dots {
-            let items:GraphItem = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "", highlighted: true)
+            if point.label == 0 {
+                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "", highlighted: true)
+            } else {
+                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "", highlighted: false)
+            }
             nodeItems.append(items)
         }
         
         updateUI(items: nodeItems)
     }
+    
+    func activateConnectedDotsInSubView(dots: [Dot]) {
+        guard let last = dots.last else { return }
+        print(dots)
+       for point in dots {
+        let items:GraphItem = .edge(src: CGPoint(x: updatedSrc.x, y: updatedSrc.y), dst: CGPoint(x: last.location.x, y: last.location.y), highlighted: true)
+            nodeItems.append(items)
+        }
+
+        updateUI(items: nodeItems)
+    }
 }
 
+extension PuzzlerViewController: SourcePointDelegate {
+    func didUpdateSource(point: CGPoint) {
+        self.updatedSrc = point
+    }
+}
 
 /*
  

@@ -44,7 +44,7 @@ class DataLoader {
         do {
             decodedData = try JSONDecoder().decode([DemoDataPoints].self,
                                                    from: jsonData)
-            print("data: ", decodedData)
+            //print("data: ", decodedData)
             
         } catch (let error) {
             print("decode \(error)")
