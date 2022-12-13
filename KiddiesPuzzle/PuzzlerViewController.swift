@@ -10,7 +10,7 @@ import UIKit
 class PuzzlerViewController: UIViewController {
     
     var dataloader: DataLoader = {
-        DataLoader(filename: "tree")
+        DataLoader(filename: "star")
     }()
     
     var graphView:GraphView!

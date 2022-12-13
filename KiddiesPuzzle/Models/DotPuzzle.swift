@@ -29,7 +29,8 @@ class DotPuzzle {
         makeUnconnectedDots()
     }
     
-    @discardableResult func connectOneMoreDot() -> DotPuzzle {
+    @discardableResult func connectOneMoreDot() -> DotPuzzle? {
+        if unconnectedDots.isEmpty { return nil }
         let firstUnconnectedDot = unconnectedDots.removeFirst()
         connectedDots.append(firstUnconnectedDot)
         return self
