@@ -13,15 +13,22 @@ class PuzzlerViewController: UIViewController {
         DataLoader(filename: "tree")
     }()
     
-    var graphView = GraphView()
+    var graphView:GraphView!
     var rawPoints = [CGPoint]()
     var nodeItems = [GraphItem]()
     var dotModels:DotPuzzle!
     var updatedSrc = CGPoint.zero
+    public var scale : CGFloat = 0.9
+    var w2 = 1000.0
+    var h2 = 950.0
+    var scaleController = ModelToViewCoordinates()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        graphView.delegate = self
+
+        //let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
+        //self.view.addGestureRecognizer(pinchGesture)
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -31,18 +38,14 @@ class PuzzlerViewController: UIViewController {
                 rawPoints.append(CGPoint(x: CGFloat(point.x), y: CGFloat(point.y)))
             }
         }
+        graphView = GraphView(frame: CGRect(x: 0, y: 0, width: w2, height: h2))
+        graphView.delegate = self
+        view.addSubview(graphView)
         
         dotModels = DotPuzzle(points: rawPoints)
         dotModels?.delegate = self
         dotModels.activateSubView()
-        graphView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(graphView)
-        NSLayoutConstraint.activate([
-            graphView.topAnchor.constraint(equalTo: view.topAnchor),
-            graphView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            graphView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            graphView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        graphView.center = view.center
         
     }
 
@@ -59,18 +62,33 @@ class PuzzlerViewController: UIViewController {
         guard let point = touches.first?.location(in: nil) else { return }
         dotModels.connectOneMoreDot()
     }
+//    
+//    @objc func changeScale(_ pinchRecognizer : UIPinchGestureRecognizer) {
+//        switch pinchRecognizer.state {
+//        case .changed, .ended:
+//            scale = pinchRecognizer.scale
+//            //scaleController = scaleController.scale(by: scale)
+//            pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
+//            //dotModels.activateSubView()
+//            pinchRecognizer.scale = 1.0
+//        default:
+//            break
+//        }
+//    }
 
 }
 
 extension PuzzlerViewController: ViewUpdaterDelegate {
     func activateUnconnectedDotsInSubView(dots: [Dot]) {
         var items:GraphItem!
-        
+        nodeItems = []
         for point in dots {
+            let result = convertToView(point: point.location)
+
             if point.label == 0 {
-                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "", highlighted: true)
+                items = .node(loc: CGPoint(x: result.x, y: result.y), name: "", highlighted: true)
             } else {
-                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "", highlighted: false)
+                items = .node(loc: CGPoint(x: result.x, y: result.y), name: "", highlighted: false)
             }
             nodeItems.append(items)
         }
@@ -78,10 +96,15 @@ extension PuzzlerViewController: ViewUpdaterDelegate {
         updateUI(items: nodeItems)
     }
     
+    func convertToView(point: CGPoint) -> CGPoint {
+        scaleController.toView(modelPoint: point)
+    }
+    
     func activateConnectedDotsInSubView(dots: [Dot]) {
         guard let last = dots.last else { return }
-        print(dots)
+       
        for point in dots {
+        
         let items:GraphItem = .edge(src: CGPoint(x: updatedSrc.x, y: updatedSrc.y), dst: CGPoint(x: last.location.x, y: last.location.y), highlighted: true)
             nodeItems.append(items)
         }
@@ -113,3 +136,9 @@ extension PuzzlerViewController: SourcePointDelegate {
  //let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
  //self.view.addGestureRecognizer(pinchGesture)
  */
+extension Float {
+    func roundToFloat(_ fractionDigits: Int) -> Float {
+        let multiplier = pow(10, Float(fractionDigits))
+        return Darwin.round(self * multiplier) / multiplier
+    }
+}

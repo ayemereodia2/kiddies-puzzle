@@ -25,6 +25,7 @@
 		E7887221294252F90064020A /* DotPuzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7887220294252F90064020A /* DotPuzzle.swift */; };
 		E7887224294253360064020A /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7887223294253360064020A /* GraphView.swift */; };
 		E78872272942544C0064020A /* DataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78872262942544C0064020A /* DataLoader.swift */; };
+		E7C33F2E2947FC34002739CA /* ModelToViewCoordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C33F2D2947FC34002739CA /* ModelToViewCoordinates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		E7887220294252F90064020A /* DotPuzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotPuzzle.swift; sourceTree = "<group>"; };
 		E7887223294253360064020A /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		E78872262942544C0064020A /* DataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLoader.swift; sourceTree = "<group>"; };
+		E7C33F2D2947FC34002739CA /* ModelToViewCoordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelToViewCoordinates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		E78871D6294252A70064020A = {
 			isa = PBXGroup;
 			children = (
+				E7C33F2D2947FC34002739CA /* ModelToViewCoordinates.swift */,
 				E7887212294252CE0064020A /* Data */,
 				E78871E1294252A70064020A /* KiddiesPuzzle */,
 				E78871F8294252A80064020A /* KiddiesPuzzleTests */,
@@ -324,6 +327,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7887224294253360064020A /* GraphView.swift in Sources */,
+				E7C33F2E2947FC34002739CA /* ModelToViewCoordinates.swift in Sources */,
 				E78871E7294252A70064020A /* PuzzlerViewController.swift in Sources */,
 				E78872272942544C0064020A /* DataLoader.swift in Sources */,
 				E78871E3294252A70064020A /* AppDelegate.swift in Sources */,
@@ -513,6 +517,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -541,6 +546,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
