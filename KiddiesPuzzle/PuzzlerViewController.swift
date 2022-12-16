@@ -10,7 +10,7 @@ import UIKit
 class PuzzlerViewController: UIViewController {
     
     var dataloader: DataLoader = {
-        DataLoader(filename: "leaf")
+        DataLoader(filename: "star")
     }()
     
     var graphView:GraphView!
@@ -21,7 +21,6 @@ class PuzzlerViewController: UIViewController {
     public var scale : CGFloat = 0.9
     var w2 = 100.0
     var h2 = 100.0
-    var scaleController = ModelToViewCoordinates()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +40,9 @@ class PuzzlerViewController: UIViewController {
         let size = UIScreen.main.bounds.size
         let modelBounds = CGRect(x: 0, y: 0, width: 20, height: 210)
         let viewBounds = CGRect(x: 0, y: 0, width: 200, height: 100)
-        graphView = GraphView(frame: CGRect(x: 0, y: 0, width: 700, height: 700))
+        graphView = GraphView()
         graphView.delegate = self
+        graphView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(graphView)
         
         dotModels = DotPuzzle(points: rawPoints)
@@ -52,6 +52,13 @@ class PuzzlerViewController: UIViewController {
         graphView.action = { 
             self.dotModels.connectOneMoreDot()
         }
+        
+        NSLayoutConstraint.activate([
+            graphView.topAnchor.constraint(equalTo: view.topAnchor),
+            graphView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            graphView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            graphView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
         
     }
 
@@ -89,12 +96,10 @@ extension PuzzlerViewController: ViewUpdaterDelegate {
         var items:GraphItem!
         nodeItems = []
         for point in dots {
-            let result = convertToView(point: point.location)
-
             if point.label == 0 {
-                items = .node(loc: CGPoint(x: result.x, y: result.y), name: "\(point.label)", highlighted: true)
+                items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "\(point.label)", highlighted: true)
             } else {
-                items = .node(loc: CGPoint(x: result.x, y: result.y), name: "\(point.label)", highlighted: false)
+                items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "\(point.label)", highlighted: false)
             }
             nodeItems.append(items)
         }
@@ -102,16 +107,17 @@ extension PuzzlerViewController: ViewUpdaterDelegate {
         updateUI(items: nodeItems)
     }
     
-    func convertToView(point: CGPoint) -> CGPoint {
-        scaleController.toView(modelPoint: point)
-    }
-    
     func activateConnectedDotsInSubView(dots: [Dot]) {
         guard let last = dots.last else { return }
        
        for point in dots {
         
-           let items:GraphItem = .edge(src: CGPoint(x: updatedSrc.x, y: updatedSrc.y), dst: CGPoint(x: last.location.x, y: last.location.y), name: "\(point.label)", highlighted: true)
+           let items:GraphItem = .edge(
+            src: CGPoint(x: updatedSrc.x, y: updatedSrc.y),
+            dst: CGPoint(x: last.location.x, y: last.location.y),
+            name: "\(point.label)",
+            highlighted: true)
+           
             nodeItems.append(items)
         }
 

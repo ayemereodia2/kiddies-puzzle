@@ -25,6 +25,14 @@ class GraphView: UIView {
         }
     }
     
+    var scaleController: ModelToViewCoordinates = ModelToViewCoordinates() {
+        didSet {
+           self.layer.sublayers?.removeAll()
+           setNeedsDisplay()
+        }
+    }
+
+    
     var lineItems: [GraphItem] = [] {
         didSet {
             setNeedsDisplay()
@@ -38,14 +46,7 @@ class GraphView: UIView {
             delegate?.didUpdateSource(point: src)
         }
     }
-    var zoomScale: CGFloat = 0.9 {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
     
-    var shapeLayer = CAShapeLayer()
-
     weak var delegate: SourcePointDelegate?
     
     override init(frame: CGRect) {
@@ -78,7 +79,7 @@ class GraphView: UIView {
             }
         }
         
-        for (index,item) in lineItems.enumerated() {
+        for (_,item) in lineItems.enumerated() {
             switch item {
             case .edge(src: let src, dst: let des, name: let name, highlighted: let highlighted):
                 addLine(fromPoint: src, centerText: name, toPoint: des, highlighted: highlighted)
@@ -91,8 +92,8 @@ class GraphView: UIView {
     
     private func makeNodeCircle(point: CGPoint, name: String, highlighted: Bool) {
         let circleLayer = CAShapeLayer()
-        let scale = UIScreen.main.scale
-        let ptx = CGRect(x: point.x +  60.0 , y: point.y, width: 60, height: 60)
+        let viewPoints = scaleController.toView(modelPoint: point)
+        let ptx = CGRect(x: viewPoints.x , y: viewPoints.y , width: 60, height: 60)
         let path = UIBezierPath(ovalIn: ptx )
         let color: UIColor = highlighted ? .blue : .yellow
         circleLayer.lineWidth = 1
@@ -100,20 +101,27 @@ class GraphView: UIView {
         circleLayer.fillColor = color.cgColor
         circleLayer.path = path.cgPath
         circleLayer.name = name
+        //circleLayer.frame = CGRect(x: frame.size.width / 2, y: frame.size.height / 2, width: frame.size.width, height: frame.size.height)
+        //circleLayer.contentsCenter = CGRect(x: frame.size.width / 2, y: frame.size.height / 2, width: frame.size.width, height: frame.size.height)
+        //circleLayer.backgroundColor = UIColor.purple.cgColor
+        //circleLayer.anchorPoint = CGPoint(x: 10, y: 10)
         self.layer.addSublayer(circleLayer)
     }
     
     private func addLine(fromPoint start: CGPoint, centerText: String = "", toPoint end:CGPoint, highlighted: Bool) {
+        let viewPointsStart = scaleController.toView(modelPoint: start)
+        let viewPointsEnd = scaleController.toView(modelPoint: end)
+
         if highlighted {
-            makeNodeCircle(point: end, name: centerText, highlighted: highlighted)
-            makeNodeCircle(point: start, name: centerText, highlighted: !highlighted)
+            makeNodeCircle(point: viewPointsEnd, name: centerText, highlighted: highlighted)
+            makeNodeCircle(point: viewPointsStart, name: centerText, highlighted: !highlighted)
             src = end
         }
-        let screen = UIScreen.main.scale
+        
         let line = CAShapeLayer()
         let linePath = UIBezierPath()
-        linePath.move(to: CGPoint(x: start.x + 80, y: start.y + 10))
-        linePath.addLine(to: CGPoint(x: end.x  + 80, y: end.y + 10))
+        linePath.move(to: CGPoint(x: start.x , y: start.y))
+        linePath.addLine(to: CGPoint(x: end.x , y: end.y))
         linePath.lineCapStyle = .butt
         line.path = linePath.cgPath
         line.strokeColor = UIColor.red.cgColor
@@ -129,8 +137,8 @@ class GraphView: UIView {
     @objc func changeScale(_ pinchRecognizer : UIPinchGestureRecognizer) {
         switch pinchRecognizer.state {
         case .changed, .ended:
-            zoomScale *= pinchRecognizer.scale
-            //scaleController = scaleController.scale(by: scale)
+            let zoomScale = pinchRecognizer.scale
+            scaleController = scaleController.scale(by: zoomScale)
             pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
             //dotModels.activateSubView()
             pinchRecognizer.scale = 1.0
@@ -144,6 +152,7 @@ class GraphView: UIView {
             let translation = gesture.translation(in: gesture.view)
             let changeX = (gesture.view?.center.x)! + translation.x
             let changeY = (gesture.view?.center.y)! + translation.y
+            scaleController = scaleController.shift(by: CGPoint(x: translation.x, y: translation.y))
             gesture.view?.center = CGPoint(x: changeX, y: changeY)
             gesture.setTranslation(CGPoint.zero, in: gesture.view)
 
@@ -160,7 +169,7 @@ class GraphView: UIView {
 //        if shapeLayer.path!.contains(point) {
 //
 //        }
-        action?()
+        //action?()
     }
     
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

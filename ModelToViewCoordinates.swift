@@ -105,7 +105,7 @@ public struct ModelToViewCoordinates {
      - Returns: the modelPoint translated into view coordinates.
      */
     public func toView(modelPoint: CGPoint) -> CGPoint  {
-        CGPoint(x: (modelPoint.x * self.zoomScale) - self.viewOffset.x, y: (modelPoint.y * self.zoomScale) - self.viewOffset.y)
+        CGPoint(x: (modelPoint.x * self.zoomScale) + self.viewOffset.x, y: (modelPoint.y * self.zoomScale) + self.viewOffset.y)
     }
     
     /**
