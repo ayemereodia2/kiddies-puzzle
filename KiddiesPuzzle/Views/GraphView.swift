@@ -27,8 +27,8 @@ class GraphView: UIView {
     
     var scaleController: ModelToViewCoordinates = ModelToViewCoordinates() {
         didSet {
-           self.layer.sublayers?.removeAll()
-           setNeedsDisplay()
+          self.layer.sublayers?.removeAll()
+          setNeedsDisplay()
         }
     }
 
@@ -70,10 +70,11 @@ class GraphView: UIView {
             
             switch item {
             case .node(loc: let loc, name: let centerText, highlighted: let highlighted):
+                let viewPoints = scaleController.toView(modelPoint: loc)
                 if index == 0 {
-                    src = loc
+                    src = viewPoints
                 }
-                makeNodeCircle(point: loc, name: centerText, highlighted: highlighted)
+                makeNodeCircle(point: viewPoints, name: centerText, highlighted: highlighted)
             case .edge(src: _, dst: _, name: _, highlighted: _):
                 print("")
             }
@@ -82,7 +83,9 @@ class GraphView: UIView {
         for (_,item) in lineItems.enumerated() {
             switch item {
             case .edge(src: let src, dst: let des, name: let name, highlighted: let highlighted):
-                addLine(fromPoint: src, centerText: name, toPoint: des, highlighted: highlighted)
+                let viewPointsStart = scaleController.toView(modelPoint: src)
+                let viewPointsEnd = scaleController.toView(modelPoint: des)
+                addLine(fromPoint: viewPointsStart, centerText: name, toPoint: viewPointsEnd, highlighted: highlighted)
             case .node(loc: _, name: _, highlighted: _):
                 print("")
             }
@@ -92,8 +95,8 @@ class GraphView: UIView {
     
     private func makeNodeCircle(point: CGPoint, name: String, highlighted: Bool) {
         let circleLayer = CAShapeLayer()
-        let viewPoints = scaleController.toView(modelPoint: point)
-        let ptx = CGRect(x: viewPoints.x , y: viewPoints.y , width: 60, height: 60)
+        
+        let ptx = CGRect(x: point.x , y: point.y , width: 60, height: 60)
         let path = UIBezierPath(ovalIn: ptx )
         let color: UIColor = highlighted ? .blue : .yellow
         circleLayer.lineWidth = 1
@@ -109,19 +112,16 @@ class GraphView: UIView {
     }
     
     private func addLine(fromPoint start: CGPoint, centerText: String = "", toPoint end:CGPoint, highlighted: Bool) {
-        let viewPointsStart = scaleController.toView(modelPoint: start)
-        let viewPointsEnd = scaleController.toView(modelPoint: end)
-
         if highlighted {
-            makeNodeCircle(point: viewPointsEnd, name: centerText, highlighted: highlighted)
-            makeNodeCircle(point: viewPointsStart, name: centerText, highlighted: !highlighted)
+            makeNodeCircle(point: end, name: centerText, highlighted: highlighted)
+            makeNodeCircle(point: start, name: centerText, highlighted: !highlighted)
             src = end
         }
         
         let line = CAShapeLayer()
         let linePath = UIBezierPath()
-        linePath.move(to: CGPoint(x: start.x , y: start.y))
-        linePath.addLine(to: CGPoint(x: end.x , y: end.y))
+        linePath.move(to: CGPoint(x: start.x + 20.0, y: start.y + 20.0))
+        linePath.addLine(to: CGPoint(x: end.x + 20.0, y: end.y + 20.0))
         linePath.lineCapStyle = .butt
         line.path = linePath.cgPath
         line.strokeColor = UIColor.red.cgColor
@@ -140,7 +140,6 @@ class GraphView: UIView {
             let zoomScale = pinchRecognizer.scale
             scaleController = scaleController.scale(by: zoomScale)
             pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
-            //dotModels.activateSubView()
             pinchRecognizer.scale = 1.0
         default:
             break
@@ -169,7 +168,7 @@ class GraphView: UIView {
 //        if shapeLayer.path!.contains(point) {
 //
 //        }
-        //action?()
+        action?()
     }
     
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

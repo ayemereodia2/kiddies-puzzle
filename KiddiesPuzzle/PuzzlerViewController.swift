@@ -13,7 +13,10 @@ class PuzzlerViewController: UIViewController {
         DataLoader(filename: "star")
     }()
     
-    var graphView:GraphView!
+    var graphView:GraphView = {
+       return GraphView()
+    }()
+    
     var rawPoints = [CGPoint]()
     var nodeItems = [GraphItem]()
     var dotModels:DotPuzzle!
@@ -28,6 +31,9 @@ class PuzzlerViewController: UIViewController {
 
         //let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
         //self.view.addGestureRecognizer(pinchGesture)
+        graphView.delegate = self
+        graphView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(graphView)
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -40,10 +46,6 @@ class PuzzlerViewController: UIViewController {
         let size = UIScreen.main.bounds.size
         let modelBounds = CGRect(x: 0, y: 0, width: 20, height: 210)
         let viewBounds = CGRect(x: 0, y: 0, width: 200, height: 100)
-        graphView = GraphView()
-        graphView.delegate = self
-        graphView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(graphView)
         
         dotModels = DotPuzzle(points: rawPoints)
         dotModels?.delegate = self
