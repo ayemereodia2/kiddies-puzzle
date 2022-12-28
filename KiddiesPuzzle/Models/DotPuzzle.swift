@@ -16,6 +16,7 @@ class DotPuzzle {
     
     public var connectedDots:[Dot] = [] {
         didSet {
+            activateSubView()
             delegate?.activateConnectedDotsInSubView(dots: connectedDots)
         }
     }

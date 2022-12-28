@@ -14,7 +14,6 @@ enum GraphItem {
 
 protocol SourcePointDelegate: AnyObject {
     func didUpdateSource(point: CGPoint)
-    //func didTap(point: CGPoint)
 }
 
 
@@ -67,38 +66,35 @@ class GraphView: UIView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         for (index,item) in items.enumerated() {
-            
             switch item {
             case .node(loc: let loc, name: let centerText, highlighted: let highlighted):
-                let viewPoints = scaleController.toView(modelPoint: loc)
+                //let viewPoints = scaleController.toView(modelPoint: loc)
                 if index == 0 {
-                    src = viewPoints
+                    src = loc
                 }
-                makeNodeCircle(point: viewPoints, name: centerText, highlighted: highlighted)
-            case .edge(src: _, dst: _, name: _, highlighted: _):
-                print("")
-            }
-        }
-        
-        for (_,item) in lineItems.enumerated() {
-            switch item {
+                
+                makeNodeCircle(point: loc, name: centerText, highlighted: highlighted)
             case .edge(src: let src, dst: let des, name: let name, highlighted: let highlighted):
-                let viewPointsStart = scaleController.toView(modelPoint: src)
-                let viewPointsEnd = scaleController.toView(modelPoint: des)
-                addLine(fromPoint: viewPointsStart, centerText: name, toPoint: viewPointsEnd, highlighted: highlighted)
-            case .node(loc: _, name: _, highlighted: _):
-                print("")
+                //let viewPointsStart = scaleController.toView(modelPoint: src)
+                //let viewPointsEnd = scaleController.toView(modelPoint: des)
+                addLine(fromPoint: src, centerText: name, toPoint: des, highlighted: highlighted)
             }
         }
     }
 
+    var pointInBlue:(CGPoint) = (CGPoint(x: 0.0, y: 0.0))
     
     private func makeNodeCircle(point: CGPoint, name: String, highlighted: Bool) {
         let circleLayer = CAShapeLayer()
         
-        let ptx = CGRect(x: point.x , y: point.y , width: 60, height: 60)
+        let ptx = CGRect(x: point.x , y: point.y , width: 30, height: 30)
         let path = UIBezierPath(ovalIn: ptx )
         let color: UIColor = highlighted ? .blue : .yellow
+        
+        if color == .blue {
+            pointInBlue = point
+        }
+        
         circleLayer.lineWidth = 1
         circleLayer.strokeColor = UIColor.green.cgColor
         circleLayer.fillColor = color.cgColor
@@ -111,34 +107,36 @@ class GraphView: UIView {
         self.layer.addSublayer(circleLayer)
     }
     
+    private func animateConnecting(from start: CGPoint, to end: CGPoint) {
+        let lineLayer = CAShapeLayer()
+        let linePath = UIBezierPath()
+        linePath.move(to: CGPoint(x: start.x + 20.0, y: start.y + 20.0))
+        linePath.addLine(to: CGPoint(x: end.x + 20.0, y: end.y + 20.0))
+        linePath.lineCapStyle = .butt
+        lineLayer.path = linePath.cgPath
+        lineLayer.strokeColor = UIColor.red.cgColor
+        lineLayer.lineWidth = 3
+        lineLayer.lineJoin = CAShapeLayerLineJoin.round
+        layer.addSublayer(lineLayer)
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.duration = 0.5
+        lineLayer.add(animation, forKey: "MyAnimation")
+    }
+    
     private func addLine(fromPoint start: CGPoint, centerText: String = "", toPoint end:CGPoint, highlighted: Bool) {
         if highlighted {
             makeNodeCircle(point: end, name: centerText, highlighted: highlighted)
             makeNodeCircle(point: start, name: centerText, highlighted: !highlighted)
             src = end
         }
-        
-        let line = CAShapeLayer()
-        let linePath = UIBezierPath()
-        linePath.move(to: CGPoint(x: start.x + 20.0, y: start.y + 20.0))
-        linePath.addLine(to: CGPoint(x: end.x + 20.0, y: end.y + 20.0))
-        linePath.lineCapStyle = .butt
-        line.path = linePath.cgPath
-        line.strokeColor = UIColor.red.cgColor
-        line.lineWidth = 3
-        line.lineJoin = CAShapeLayerLineJoin.round
-        layer.addSublayer(line)
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.fromValue = 0
-        animation.duration = 0.5
-        line.add(animation, forKey: "MyAnimation")
+        animateConnecting(from: start, to: end)
   }
     
     @objc func changeScale(_ pinchRecognizer : UIPinchGestureRecognizer) {
         switch pinchRecognizer.state {
         case .changed, .ended:
-            let zoomScale = pinchRecognizer.scale
-            scaleController = scaleController.scale(by: zoomScale)
+            //let zoomScale = pinchRecognizer.scale
             pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
             pinchRecognizer.scale = 1.0
         default:
@@ -151,10 +149,8 @@ class GraphView: UIView {
             let translation = gesture.translation(in: gesture.view)
             let changeX = (gesture.view?.center.x)! + translation.x
             let changeY = (gesture.view?.center.y)! + translation.y
-            scaleController = scaleController.shift(by: CGPoint(x: translation.x, y: translation.y))
             gesture.view?.center = CGPoint(x: changeX, y: changeY)
             gesture.setTranslation(CGPoint.zero, in: gesture.view)
-
         }
     }
     
@@ -163,10 +159,18 @@ class GraphView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch = touches.first
-//           guard let point = touch?.location(in: self) else { return }
+        let touch = touches.first
+           guard let point = touch?.location(in: self) else { return }
+        print(pointInBlue)
+        
 //        if shapeLayer.path!.contains(point) {
 //
+//        }
+//        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
+//        for layer in sublayers {
+//            if layer.fillColor == UIColor.blue.cgColor {
+//                print("layer")
+//            }
 //        }
         action?()
     }
