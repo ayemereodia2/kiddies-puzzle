@@ -72,13 +72,13 @@ class PuzzlerViewController: UIViewController {
         ])
         
         cancelButton.addTarget(self, action: #selector(closePuzzler), for: .touchUpInside)
-        dotModels.activateSubView()
+        dotModels.activateSubView(activated: true)
     }
         
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         graphView.center = view.center
-        graphView.action = { 
+        graphView.action = {
             self.dotModels.connectOneMoreDot()
         }
     }
@@ -116,37 +116,41 @@ class PuzzlerViewController: UIViewController {
 }
 
 extension PuzzlerViewController: ViewUpdaterDelegate {
-    func activateUnconnectedDotsInSubView(dots: [Dot]) {
+    func activateUnconnectedDotsInSubView(dots: [Dot], status: Bool) {
         var items:GraphItem!
+        var tempDots = dots
+//        if tempDots.isEmpty { return }
+//
+//        let firstPoint = tempDots.removeFirst()
+//
+//        items = .node(loc: CGPoint(x: firstPoint.location.x, y: firstPoint.location.y), name: "\(firstPoint.label)", highlighted: status)
+        
         nodeItems = []
-        for point in dots {
-            if point.label == 0 {
+        //nodeItems.append(items)
+    
+        for (index,point) in tempDots.enumerated() {
+            if index == 1 {
                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "\(point.label)", highlighted: true)
             } else {
                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "\(point.label)", highlighted: false)
             }
+        
             nodeItems.append(items)
+            
         }
         graphView.items = nodeItems
-        //updateUI(items: nodeItems)
     }
     
     func activateConnectedDotsInSubView(dots: [Dot]) {
         //var linkItems = [GraphItem]()
         guard let last = dots.last else { return }
-       
-       //for point in dots {
-        
+
            let items:GraphItem = .edge(
             src: CGPoint(x: updatedSrc.x, y: updatedSrc.y),
             dst: CGPoint(x: last.location.x, y: last.location.y),
             name: "\(last.label)",
             highlighted: true)
            graphView.items.append(items)
-           //linkItems.append(items)
-       // }
-
-        //updateUIForLines(items: nodeItems)
     }
 }
 

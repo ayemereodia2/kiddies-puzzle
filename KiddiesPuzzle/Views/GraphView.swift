@@ -30,7 +30,8 @@ class GraphView: UIView {
           setNeedsDisplay()
         }
     }
-
+    
+    public var scale : CGFloat = 0.9
     
     var lineItems: [GraphItem] = [] {
         didSet {
@@ -65,46 +66,47 @@ class GraphView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        for (index,item) in items.enumerated() {
+        for item in items {
             switch item {
             case .node(loc: let loc, name: let centerText, highlighted: let highlighted):
-                //let viewPoints = scaleController.toView(modelPoint: loc)
-                if index == 0 {
-                    src = loc
-                }
-                
+                //  let viewPoints = scaleController.toView(modelPoint: loc)
+                src = loc
                 makeNodeCircle(point: loc, name: centerText, highlighted: highlighted)
             case .edge(src: let src, dst: let des, name: let name, highlighted: let highlighted):
-                //let viewPointsStart = scaleController.toView(modelPoint: src)
-                //let viewPointsEnd = scaleController.toView(modelPoint: des)
+                //  let viewPointsStart = scaleController.toView(modelPoint: src)
+                //  let viewPointsEnd = scaleController.toView(modelPoint: des)
                 addLine(fromPoint: src, centerText: name, toPoint: des, highlighted: highlighted)
             }
         }
     }
 
     var pointInBlue:(CGPoint) = (CGPoint(x: 0.0, y: 0.0))
-    
+    var currentValue = ""
     private func makeNodeCircle(point: CGPoint, name: String, highlighted: Bool) {
         let circleLayer = CAShapeLayer()
+        let textLayer = CATextLayer()
+        
         
         let ptx = CGRect(x: point.x , y: point.y , width: 30, height: 30)
         let path = UIBezierPath(ovalIn: ptx )
         let color: UIColor = highlighted ? .blue : .yellow
-        
-        if color == .blue {
-            pointInBlue = point
+        if highlighted {
+            currentValue = name
         }
-        
         circleLayer.lineWidth = 1
         circleLayer.strokeColor = UIColor.green.cgColor
         circleLayer.fillColor = color.cgColor
         circleLayer.path = path.cgPath
-        circleLayer.name = name
         //circleLayer.frame = CGRect(x: frame.size.width / 2, y: frame.size.height / 2, width: frame.size.width, height: frame.size.height)
         //circleLayer.contentsCenter = CGRect(x: frame.size.width / 2, y: frame.size.height / 2, width: frame.size.width, height: frame.size.height)
         //circleLayer.backgroundColor = UIColor.purple.cgColor
         //circleLayer.anchorPoint = CGPoint(x: 10, y: 10)
-        self.layer.addSublayer(circleLayer)
+        textLayer.frame = CGRect(x: point.x + 8.0 , y: point.y + 8.0 , width: 30, height: 30)
+        textLayer.fontSize = 12
+        textLayer.string = name
+        textLayer.foregroundColor = UIColor.red.cgColor
+        circleLayer.addSublayer(textLayer)
+        layer.addSublayer(circleLayer)
     }
     
     private func animateConnecting(from start: CGPoint, to end: CGPoint) {
@@ -126,10 +128,10 @@ class GraphView: UIView {
     
     private func addLine(fromPoint start: CGPoint, centerText: String = "", toPoint end:CGPoint, highlighted: Bool) {
         if highlighted {
-            makeNodeCircle(point: end, name: centerText, highlighted: highlighted)
-            makeNodeCircle(point: start, name: centerText, highlighted: !highlighted)
+            makeNodeCircle(point: end, name: centerText, highlighted: !highlighted)
             src = end
         }
+        
         animateConnecting(from: start, to: end)
   }
     
@@ -159,20 +161,20 @@ class GraphView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first
-           guard let point = touch?.location(in: self) else { return }
-        print(pointInBlue)
-        
-//        if shapeLayer.path!.contains(point) {
-//
-//        }
-//        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
-//        for layer in sublayers {
-//            if layer.fillColor == UIColor.blue.cgColor {
-//                print("layer")
-//            }
-//        }
-        action?()
+        super.touchesBegan(touches, with: event)
+        if let touch = touches.first, let touchedLayer = self.layerFor(touch), let text = touchedLayer.string as? String {
+            if text == currentValue {
+                action?()
+            }
+        }
+    }
+    
+    private func layerFor(_ touch: UITouch) -> CATextLayer? {
+        let touchLocation = touch.location(in: self)
+        let locationInView = self.convert(touchLocation, to: nil)
+
+        let hitPresentationLayer = layer.presentation()?.hitTest(locationInView)
+        return hitPresentationLayer?.model() as? CATextLayer
     }
     
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -185,6 +187,24 @@ class GraphView: UIView {
 //                print("layer")
 //            }
 //        }
+//    }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//
+//        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
+//        for layer in sublayers {
+//            if layer.fillColor == UIColor.blue.cgColor {
+//                guard let textlayers = layer.sublayers as? [CATextLayer] else { return }
+//    //, let text = textlayers.string as? String
+//                for textlayer in textlayers {
+//                    if (textlayer.string as? String)! == currentValue {
+//                        action?()
+//                    }
+//                }
+//            }
+//
+//        }
+//
 //    }
 }
 
