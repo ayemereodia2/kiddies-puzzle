@@ -53,10 +53,8 @@ class GraphView: UIView {
         super.init(frame: frame)
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(moveView))
         let pincGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
-       // let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
         self.addGestureRecognizer(panGesture)
         self.addGestureRecognizer(pincGesture)
-        //self.addGestureRecognizer(tapGesture)
         backgroundColor = .brown
     }
     
@@ -97,10 +95,6 @@ class GraphView: UIView {
         circleLayer.strokeColor = UIColor.green.cgColor
         circleLayer.fillColor = color.cgColor
         circleLayer.path = path.cgPath
-        //circleLayer.frame = CGRect(x: frame.size.width / 2, y: frame.size.height / 2, width: frame.size.width, height: frame.size.height)
-        //circleLayer.contentsCenter = CGRect(x: frame.size.width / 2, y: frame.size.height / 2, width: frame.size.width, height: frame.size.height)
-        //circleLayer.backgroundColor = UIColor.purple.cgColor
-        //circleLayer.anchorPoint = CGPoint(x: 10, y: 10)
         textLayer.frame = CGRect(x: point.x + 8.0 , y: point.y + 8.0 , width: 30, height: 30)
         textLayer.fontSize = 12
         textLayer.string = name
@@ -156,10 +150,6 @@ class GraphView: UIView {
         }
     }
     
-    @objc func tapDetected(tapGesture: UITapGestureRecognizer) {
-        
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if let touch = touches.first, let touchedLayer = self.layerFor(touch), let text = touchedLayer.string as? String {
@@ -176,35 +166,5 @@ class GraphView: UIView {
         let hitPresentationLayer = layer.presentation()?.hitTest(locationInView)
         return hitPresentationLayer?.model() as? CATextLayer
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let touch = touches.first
-//        guard let point = touch?.location(in: self) else { return }
-//        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
-//
-//        for layer in sublayers {
-//            if layer.name == "0" {
-//                print("layer")
-//            }
-//        }
-//    }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//
-//        guard let sublayers = self.layer.sublayers as? [CAShapeLayer] else { return }
-//        for layer in sublayers {
-//            if layer.fillColor == UIColor.blue.cgColor {
-//                guard let textlayers = layer.sublayers as? [CATextLayer] else { return }
-//    //, let text = textlayers.string as? String
-//                for textlayer in textlayers {
-//                    if (textlayer.string as? String)! == currentValue {
-//                        action?()
-//                    }
-//                }
-//            }
-//
-//        }
-//
-//    }
 }
 

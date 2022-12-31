@@ -72,7 +72,7 @@ class PuzzlerViewController: UIViewController {
         ])
         
         cancelButton.addTarget(self, action: #selector(closePuzzler), for: .touchUpInside)
-        dotModels.activateSubView(activated: true)
+        dotModels.activateSubView(activated: 1)
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -116,20 +116,16 @@ class PuzzlerViewController: UIViewController {
 }
 
 extension PuzzlerViewController: ViewUpdaterDelegate {
-    func activateUnconnectedDotsInSubView(dots: [Dot], status: Bool) {
+    func activateUnconnectedDotsInSubView(dots: [Dot], with highlightedIndex: Int) {
         var items:GraphItem!
-        var tempDots = dots
-//        if tempDots.isEmpty { return }
-//
-//        let firstPoint = tempDots.removeFirst()
-//
-//        items = .node(loc: CGPoint(x: firstPoint.location.x, y: firstPoint.location.y), name: "\(firstPoint.label)", highlighted: status)
+        let tempDots = dots
+        if tempDots.isEmpty { return }
         
+        let firstPoint = tempDots.startIndex
+        let secondItem = tempDots.index(after: firstPoint)
         nodeItems = []
-        //nodeItems.append(items)
-    
         for (index,point) in tempDots.enumerated() {
-            if index == 1 {
+            if index == secondItem {
                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "\(point.label)", highlighted: true)
             } else {
                 items = .node(loc: CGPoint(x: point.location.x, y: point.location.y), name: "\(point.label)", highlighted: false)
@@ -142,9 +138,7 @@ extension PuzzlerViewController: ViewUpdaterDelegate {
     }
     
     func activateConnectedDotsInSubView(dots: [Dot]) {
-        //var linkItems = [GraphItem]()
         guard let last = dots.last else { return }
-
            let items:GraphItem = .edge(
             src: CGPoint(x: updatedSrc.x, y: updatedSrc.y),
             dst: CGPoint(x: last.location.x, y: last.location.y),

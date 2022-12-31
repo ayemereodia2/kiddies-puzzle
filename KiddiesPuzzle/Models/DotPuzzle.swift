@@ -7,7 +7,7 @@
 
 import Foundation
 protocol ViewUpdaterDelegate: AnyObject {
-    func activateUnconnectedDotsInSubView(dots: [Dot], status: Bool)
+    func activateUnconnectedDotsInSubView(dots: [Dot], with highlightedIndex: Int)
     func activateConnectedDotsInSubView(dots: [Dot])
 }
 
@@ -16,7 +16,7 @@ class DotPuzzle {
     
     public var connectedDots:[Dot] = [] {
         didSet {
-            activateSubView(activated: false)
+            activateSubView(activated: connectedDots.count)
             delegate?.activateConnectedDotsInSubView(dots: connectedDots)
         }
     }
@@ -32,8 +32,8 @@ class DotPuzzle {
     
     @discardableResult func connectOneMoreDot() -> DotPuzzle? {
         if unconnectedDots.isEmpty { return nil }
-        let firstUnconnectedDot = unconnectedDots.removeFirst()
-        connectedDots.append(firstUnconnectedDot)
+        let firstUnconnectedDot = unconnectedDots.remove(at: 1) // [1,2,3]
+        connectedDots.append(firstUnconnectedDot) // [1,2,3]
         return self
     }
     
@@ -44,8 +44,8 @@ class DotPuzzle {
         }
     }
     
-    func activateSubView(activated: Bool) {
-        delegate?.activateUnconnectedDotsInSubView(dots: unconnectedDots, status: activated)
+    func activateSubView(activated index: Int) {
+        delegate?.activateUnconnectedDotsInSubView(dots: unconnectedDots, with: index)
     }
 }
 
