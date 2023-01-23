@@ -49,7 +49,7 @@ class PuzzlerViewController: UIViewController {
         
         dotModels = DotPuzzle(points: rawPoints)
         dotModels?.delegate = self
-        graphView = GraphView(frame: CGRect(x: 0, y: 0, width: maxX + 30.0, height: maxY + 30.0))
+        graphView = GraphView()
 
     }
     
@@ -62,13 +62,18 @@ class PuzzlerViewController: UIViewController {
         view.backgroundColor = .brown
         graphView.delegate = self
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        graphView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(graphView)
         view.addSubview(cancelButton)
         NSLayoutConstraint.activate([
             cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             cancelButton.widthAnchor.constraint(equalToConstant: 44),
-            cancelButton.heightAnchor.constraint(equalToConstant: 44)
+            cancelButton.heightAnchor.constraint(equalToConstant: 44),
+            graphView.topAnchor.constraint(equalTo: cancelButton.bottomAnchor),
+            graphView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            graphView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            graphView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
         cancelButton.addTarget(self, action: #selector(closePuzzler), for: .touchUpInside)
@@ -81,6 +86,8 @@ class PuzzlerViewController: UIViewController {
         graphView.action = {
             self.dotModels.connectOneMoreDot()
         }
+        
+        print(view.frame.size)
     }
 
     // take CGPoint JSON inputs from API or folder
@@ -99,19 +106,6 @@ class PuzzlerViewController: UIViewController {
     @objc func closePuzzler() {
         dismiss(animated: true)
     }
-//    
-//    @objc func changeScale(_ pinchRecognizer : UIPinchGestureRecognizer) {
-//        switch pinchRecognizer.state {
-//        case .changed, .ended:
-//            scale = pinchRecognizer.scale
-//            //scaleController = scaleController.scale(by: scale)
-//            pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
-//            //dotModels.activateSubView()
-//            pinchRecognizer.scale = 1.0
-//        default:
-//            break
-//        }
-//    }
 
 }
 

@@ -7,54 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "04E0F1C6-9AFB-47CE-A137-FC2D5B96C8AD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "KiddiesPuzzle/PuzzlerViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "PuzzlerViewController"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "04E0F1C6-9AFB-47CE-A137-FC2D5B96C8AD - fb94b49118e50c11"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "KiddiesPuzzle.PuzzlerViewController.init(dataloader: KiddiesPuzzle.DataLoader) -&gt; KiddiesPuzzle.PuzzlerViewController"
-                  moduleName = "KiddiesPuzzle"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/andela1234/Documents/XCodeProject/KiddiesPuzzle/KiddiesPuzzle/PuzzlerViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "496">
-               </Location>
-               <Location
-                  uuid = "04E0F1C6-9AFB-47CE-A137-FC2D5B96C8AD - c645b1509d781225"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "KiddiesPuzzle.PuzzlerViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;KiddiesPuzzle.PuzzlerViewController&gt;"
-                  moduleName = "KiddiesPuzzle"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/andela1234/Documents/XCodeProject/KiddiesPuzzle/KiddiesPuzzle/PuzzlerViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "115"
-                  endingLineNumber = "115"
-                  offsetFromSymbolStart = "444">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "088F8EBA-B568-4DAC-8DCF-667FFE00B4AF"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -62,8 +14,8 @@
             filePath = "KiddiesPuzzle/PuzzlerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "updateUI(items:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +62,8 @@
             filePath = "KiddiesPuzzle/Views/GraphView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "layerFor(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -126,8 +78,8 @@
             filePath = "KiddiesPuzzle/Views/GraphView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "touchesBegan(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +94,8 @@
             filePath = "KiddiesPuzzle/PuzzlerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "activateConnectedDotsInSubView(dots:)"
             landmarkType = "7">
          </BreakpointContent>

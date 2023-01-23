@@ -55,7 +55,7 @@ class GraphView: UIView {
         let pincGesture = UIPinchGestureRecognizer(target: self, action: #selector(changeScale))
         self.addGestureRecognizer(panGesture)
         self.addGestureRecognizer(pincGesture)
-        backgroundColor = .brown
+        backgroundColor = .cyan
     }
     
     required init?(coder: NSCoder) {
@@ -85,17 +85,18 @@ class GraphView: UIView {
         let textLayer = CATextLayer()
         
         
-        let ptx = CGRect(x: point.x , y: point.y , width: 30, height: 30)
+        let ptx = convert(CGRect(x: point.x , y: point.y , width: 30, height: 30), to: self)
         let path = UIBezierPath(ovalIn: ptx )
         let color: UIColor = highlighted ? .blue : .yellow
         if highlighted {
             currentValue = name
         }
+        
         circleLayer.lineWidth = 1
         circleLayer.strokeColor = UIColor.green.cgColor
         circleLayer.fillColor = color.cgColor
         circleLayer.path = path.cgPath
-        textLayer.frame = CGRect(x: point.x + 8.0 , y: point.y + 8.0 , width: 30, height: 30)
+        textLayer.frame = convert(CGRect(x: point.x + 8.0 , y: point.y + 8.0 , width: 30, height: 30), to: self)
         textLayer.fontSize = 12
         textLayer.string = name
         textLayer.foregroundColor = UIColor.red.cgColor

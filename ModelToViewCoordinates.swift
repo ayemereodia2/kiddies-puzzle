@@ -92,7 +92,7 @@ public struct ModelToViewCoordinates {
      */
     public init(modelBounds: CGRect, viewBounds: CGRect) {
         // TODO: Write me
-        self.init(zoomScale: 1.0, viewOffset: CGPoint.zero)
+        self.init(zoomScale: viewBounds.height / viewBounds.width, viewOffset: CGPoint.zero)
         self.modelBounds = modelBounds
         self.viewBounds = viewBounds
     }
@@ -129,8 +129,8 @@ public struct ModelToViewCoordinates {
      viewOffset but a scale of self.zoomScale * amount
      */
     public mutating func scale(by amount: CGFloat) -> ModelToViewCoordinates  {
-        self.zoomScale = self.zoomScale * CGFloat(Float(amount).roundToFloat(2))
-        return self
+        let zoomScale = self.zoomScale * CGFloat(Float(amount).roundToFloat(2))
+        return ModelToViewCoordinates(zoomScale: zoomScale, viewOffset: self.viewOffset)
     }
     
     /**
@@ -143,7 +143,19 @@ public struct ModelToViewCoordinates {
      zoomScale but an offset of (viewOffset.x + amount.x, viewOffset.y + amount.y)
      */
     public mutating func shift(by amount: CGPoint) -> ModelToViewCoordinates  {
-        self.viewOffset = CGPoint(x: viewOffset.x + amount.x, y: viewOffset.y + amount.y)
-        return self
+        let viewOffset = CGPoint(x: viewOffset.x + amount.x, y: viewOffset.y + amount.y)
+        return ModelToViewCoordinates(zoomScale: zoomScale, viewOffset: viewOffset)
     }
+    
+    mutating func calculateModelBoundScaleCenter() {
+        guard let modelBounds = self.modelBounds, let viewBounds = self.viewBounds else { return }
+        
+        let center =  CGPoint(x: modelBounds.width / 2, y: modelBounds.height / 2)
+        let scaledModelCenter = CGPoint(x: center.x * zoomScale, y: center.y * zoomScale)
+        
+        let viewModelCenter =  CGPoint(x: (viewBounds.width / 2), y: viewBounds.height / 2)
+
+        self.viewOffset = CGPoint(x: viewModelCenter.x - scaledModelCenter.x, y: viewModelCenter.y - viewModelCenter.y)
+    }
+    
 }
