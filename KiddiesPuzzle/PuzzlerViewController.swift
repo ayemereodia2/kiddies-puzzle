@@ -27,20 +27,20 @@ class PuzzlerViewController: UIViewController {
     var dotModels:DotPuzzle!
     var updatedSrc = CGPoint.zero
     public var scale : CGFloat = 0.9
-    var maxX = 0.0
-    var maxY = 0.0
+    var viewWidth:CGFloat = 0.0
+    var viewHeight:CGFloat = 0.0
     
     init(dataloader: DataLoader) {
         self.dataloader = dataloader
         super.init(nibName: nil, bundle: nil)
         if let decodedPoints = dataloader.readLocalFile() {
             for point in decodedPoints {
-                if point.x > maxX {
-                    maxX = point.x
+                if point.x > viewWidth {
+                    viewWidth = point.x
                 }
                 
-                if point.y > maxY {
-                    maxY = point.y
+                if point.y > viewHeight {
+                    viewHeight = point.y
                 }
                 
                 rawPoints.append(CGPoint(x: CGFloat(point.x), y: CGFloat(point.y)))
@@ -49,8 +49,7 @@ class PuzzlerViewController: UIViewController {
         
         dotModels = DotPuzzle(points: rawPoints)
         dotModels?.delegate = self
-        graphView = GraphView()
-
+        graphView = GraphView(frame: CGRect(x: 0, y: 0, width: viewWidth + 100, height: viewHeight + 100))
     }
     
     required init?(coder: NSCoder) {
@@ -62,7 +61,6 @@ class PuzzlerViewController: UIViewController {
         view.backgroundColor = .brown
         graphView.delegate = self
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        graphView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(graphView)
         view.addSubview(cancelButton)
         NSLayoutConstraint.activate([
@@ -70,10 +68,6 @@ class PuzzlerViewController: UIViewController {
             cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             cancelButton.widthAnchor.constraint(equalToConstant: 44),
             cancelButton.heightAnchor.constraint(equalToConstant: 44),
-            graphView.topAnchor.constraint(equalTo: cancelButton.bottomAnchor),
-            graphView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            graphView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            graphView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
         cancelButton.addTarget(self, action: #selector(closePuzzler), for: .touchUpInside)

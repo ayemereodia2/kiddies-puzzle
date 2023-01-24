@@ -91,7 +91,6 @@ public struct ModelToViewCoordinates {
      
      */
     public init(modelBounds: CGRect, viewBounds: CGRect) {
-        // TODO: Write me
         self.init(zoomScale: 1.0, viewOffset: CGPoint.zero)
         self.modelBounds = modelBounds
         self.viewBounds = viewBounds
@@ -107,9 +106,7 @@ public struct ModelToViewCoordinates {
         let offSet = calculateInitialZoomScale(viewBound: viewBound, modelBound: modelBound)
         
         let modelCenter = CGPoint(x: (((modelBound.width / 2)  + modelBound.minX) * offSet) , y: (((modelBound.height / 2) + modelBound.minY) * offSet))
-        
-        print(modelCenter)
-        
+                
         let viewCenter = CGPoint(x: (viewBound.width / 2) - viewBound.minX, y: (viewBound.height / 2) - viewBound.minY)
         
         return CGPoint(x: viewCenter.x - modelCenter.x, y: viewCenter.y - modelCenter.y)

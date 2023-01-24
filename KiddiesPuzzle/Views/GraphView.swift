@@ -85,9 +85,10 @@ class GraphView: UIView {
         let textLayer = CATextLayer()
         
         
-        let ptx = convert(CGRect(x: point.x , y: point.y , width: 30, height: 30), to: self)
+        let ptx = CGRect(x: point.x , y: point.y , width: 30, height: 30)
         let path = UIBezierPath(ovalIn: ptx )
         let color: UIColor = highlighted ? .blue : .yellow
+        
         if highlighted {
             currentValue = name
         }
@@ -96,7 +97,7 @@ class GraphView: UIView {
         circleLayer.strokeColor = UIColor.green.cgColor
         circleLayer.fillColor = color.cgColor
         circleLayer.path = path.cgPath
-        textLayer.frame = convert(CGRect(x: point.x + 8.0 , y: point.y + 8.0 , width: 30, height: 30), to: self)
+        textLayer.frame = CGRect(x: point.x + 8.0 , y: point.y + 8.0 , width: 30, height: 30)
         textLayer.fontSize = 12
         textLayer.string = name
         textLayer.foregroundColor = UIColor.red.cgColor
@@ -133,8 +134,10 @@ class GraphView: UIView {
     @objc func changeScale(_ pinchRecognizer : UIPinchGestureRecognizer) {
         switch pinchRecognizer.state {
         case .changed, .ended:
-            //let zoomScale = pinchRecognizer.scale
+            let zoomScale = pinchRecognizer.scale
+            
             pinchRecognizer.view?.transform = (pinchRecognizer.view?.transform)!.scaledBy(x: pinchRecognizer.scale, y: pinchRecognizer.scale)
+            //scaleController = scaleController.scale(by: zoomScale)
             pinchRecognizer.scale = 1.0
         default:
             break
