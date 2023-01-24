@@ -144,23 +144,18 @@ final class KiddiesPuzzleTests: XCTestCase {
         let t1 = ModelToViewCoordinates(modelBounds: b1, viewBounds: b2)
         XCTAssertEqual(t1.zoomScale, 0.5)
         XCTAssertEqual(t1.viewOffset, CGPoint.zero)
-        
-          var t2 = ModelToViewCoordinates(modelBounds: b1, viewBounds: b3)
+
+          let t2 = ModelToViewCoordinates(modelBounds: b1, viewBounds: b3)
         XCTAssertEqual(t2.zoomScale, 0.25)
-        t2.calculateModelBoundScaleCenter()
         XCTAssertEqual(t2.viewOffset, CGPoint(x: 50, y: 0))
         
-        var t3 = ModelToViewCoordinates(modelBounds: b4, viewBounds: b1)
+          let t3 = ModelToViewCoordinates(modelBounds: b4, viewBounds: b1)
         XCTAssertEqual(t3.zoomScale, 100.0)
-        t3.calculateModelBoundScaleCenter()
         XCTAssertEqual(t3.viewOffset, CGPoint(x: 200, y: 100))
         
-        var t4 = ModelToViewCoordinates(modelBounds: b4, viewBounds: b3)
+          let t4 = ModelToViewCoordinates(modelBounds: b4, viewBounds: b3)
         XCTAssertEqual(t4.zoomScale, 25.0)
-        t4.calculateModelBoundScaleCenter()
         XCTAssertEqual(t4.viewOffset, CGPoint(x: 100, y: 25.0))
-        
-        
       }
 
 }

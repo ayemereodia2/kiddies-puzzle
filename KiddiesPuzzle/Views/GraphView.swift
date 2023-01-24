@@ -67,13 +67,13 @@ class GraphView: UIView {
         for item in items {
             switch item {
             case .node(loc: let loc, name: let centerText, highlighted: let highlighted):
-                //  let viewPoints = scaleController.toView(modelPoint: loc)
-                src = loc
-                makeNodeCircle(point: loc, name: centerText, highlighted: highlighted)
+                  let viewPoints = scaleController.toView(modelPoint: loc)
+                src = viewPoints
+                makeNodeCircle(point: viewPoints, name: centerText, highlighted: highlighted)
             case .edge(src: let src, dst: let des, name: let name, highlighted: let highlighted):
-                //  let viewPointsStart = scaleController.toView(modelPoint: src)
-                //  let viewPointsEnd = scaleController.toView(modelPoint: des)
-                addLine(fromPoint: src, centerText: name, toPoint: des, highlighted: highlighted)
+                  let viewPointsStart = scaleController.toView(modelPoint: src)
+                  let viewPointsEnd = scaleController.toView(modelPoint: des)
+                addLine(fromPoint: viewPointsStart, centerText: name, toPoint: viewPointsEnd, highlighted: highlighted)
             }
         }
     }

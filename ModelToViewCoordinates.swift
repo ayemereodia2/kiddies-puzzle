@@ -92,9 +92,27 @@ public struct ModelToViewCoordinates {
      */
     public init(modelBounds: CGRect, viewBounds: CGRect) {
         // TODO: Write me
-        self.init(zoomScale: viewBounds.height / viewBounds.width, viewOffset: CGPoint.zero)
+        self.init(zoomScale: 1.0, viewOffset: CGPoint.zero)
         self.modelBounds = modelBounds
         self.viewBounds = viewBounds
+        self.zoomScale = calculateInitialZoomScale(viewBound: viewBounds, modelBound: modelBounds)
+        self.viewOffset = calculateInitialViewOffSet(viewBound: viewBounds, modelBound: modelBounds)
+    }
+    
+    func calculateInitialZoomScale(viewBound: CGRect, modelBound: CGRect) -> CGFloat {
+        viewBound.height / modelBound.height
+    }
+    
+    func calculateInitialViewOffSet(viewBound: CGRect, modelBound: CGRect) -> CGPoint {
+        let offSet = calculateInitialZoomScale(viewBound: viewBound, modelBound: modelBound)
+        
+        let modelCenter = CGPoint(x: (((modelBound.width / 2)  + modelBound.minX) * offSet) , y: (((modelBound.height / 2) + modelBound.minY) * offSet))
+        
+        print(modelCenter)
+        
+        let viewCenter = CGPoint(x: (viewBound.width / 2) - viewBound.minX, y: (viewBound.height / 2) - viewBound.minY)
+        
+        return CGPoint(x: viewCenter.x - modelCenter.x, y: viewCenter.y - modelCenter.y)
     }
     
     /**
@@ -145,17 +163,6 @@ public struct ModelToViewCoordinates {
     public mutating func shift(by amount: CGPoint) -> ModelToViewCoordinates  {
         let viewOffset = CGPoint(x: viewOffset.x + amount.x, y: viewOffset.y + amount.y)
         return ModelToViewCoordinates(zoomScale: zoomScale, viewOffset: viewOffset)
-    }
-    
-    mutating func calculateModelBoundScaleCenter() {
-        guard let modelBounds = self.modelBounds, let viewBounds = self.viewBounds else { return }
-        
-        let center =  CGPoint(x: modelBounds.width / 2, y: modelBounds.height / 2)
-        let scaledModelCenter = CGPoint(x: center.x * zoomScale, y: center.y * zoomScale)
-        
-        let viewModelCenter =  CGPoint(x: (viewBounds.width / 2), y: viewBounds.height / 2)
-
-        self.viewOffset = CGPoint(x: viewModelCenter.x - scaledModelCenter.x, y: viewModelCenter.y - viewModelCenter.y)
     }
     
 }
